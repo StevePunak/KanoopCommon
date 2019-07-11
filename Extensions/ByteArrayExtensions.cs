@@ -76,29 +76,29 @@ namespace KanoopCommon.Extensions
 			return i == arr.Length;
 		}
 
-		public static bool Contains(this byte[] self, byte[] candidate)
+		public static bool Contains(this byte[] haystack, byte[] needle)
 		{
-			return (IndexOf(self, candidate, 0)>=0);
+			return IndexOf(haystack, needle, 0) >= 0;
 		}
 
-		public static int IndexOf(this byte[] self, byte candidate,int startAt)
+		public static int IndexOf(this byte[] haystack, byte needle, int startIndex)
 		{
-			return Array.IndexOf(self, candidate, startAt);
+			return Array.IndexOf(haystack, needle, startIndex);
 		}
 
-		public static int IndexOf(this byte[] self, byte[] candidate)
+		public static int IndexOf(this byte[] haystack, byte[] needle)
 		{
-			return IndexOf(self, candidate, 0);
+			return IndexOf(haystack, needle, 0);
 		}
-		public static int IndexOf(this byte[] self, byte[] candidate, int startAt)
+		public static int IndexOf(this byte[] haystack, byte[] needle, int startIndex)
 		{
 			int retVal = -1;
-			if (!IsEmptyLocate(self, candidate))
+			if (!IsEmptyLocate(haystack, needle))
 			{
 
-				for (int i = startAt; i < self.Length; i++)
+				for (int i = startIndex; i < haystack.Length; i++)
 				{
-					if (!IsMatch(self, i, candidate))
+					if (!IsMatch(haystack, i, needle))
 						continue;
 
 					retVal = i;
@@ -108,25 +108,25 @@ namespace KanoopCommon.Extensions
 			return retVal;
 		}
 
-		static bool IsMatch(byte[] array, int position, byte[] candidate)
+		static bool IsMatch(byte[] haystack, int index, byte[] needle)
 		{
-			if (candidate.Length > (array.Length - position))
+			if (needle.Length > (haystack.Length - index))
 				return false;
 
-			for (int i = 0; i < candidate.Length; i++)
-				if (array[position + i] != candidate[i])
+			for (int i = 0; i < needle.Length; i++)
+				if (haystack[index + i] != needle[i])
 					return false;
 
 			return true;
 		}
 
-		static bool IsEmptyLocate(byte[] array, byte[] candidate)
+		static bool IsEmptyLocate(byte[] haystack, byte[] needle)
 		{
-			return array == null
-					|| candidate == null
-					|| array.Length == 0
-					|| candidate.Length == 0
-					|| candidate.Length > array.Length;
+			return haystack == null
+					|| needle == null
+					|| haystack.Length == 0
+					|| needle.Length == 0
+					|| needle.Length > haystack.Length;
 		}
 
 		public static String ToCSharpByteArray(this byte[] array, String variableName)

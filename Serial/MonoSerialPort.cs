@@ -92,7 +92,7 @@ namespace KanoopCommon.Serial
 						//Console.WriteLine("read timed out");
 					}
 				}
-				catch(Exception e)
+				catch(Exception)
 				{
 					if(_parent.BytesInReceiveBuffer > 0)
 					{

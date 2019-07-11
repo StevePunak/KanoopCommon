@@ -11,8 +11,6 @@ using System.Data.Common;
 using System.Data;
 using System.IO;
 using System.Web;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
 using KanoopCommon.Geometry;
 using MySql.Data.Types;
 
@@ -297,124 +295,6 @@ namespace KanoopCommon.Conversions
 
 			}
 
-		}
-
-		public static bool LoadSheetFromDataReader(ExcelWorksheet sheet, IDataReader reader)
-		{
-			return LoadSheetFromDataReader(sheet, reader,true, 0, 0);
-		}
-
-		public static bool LoadSheetFromDataReader(ExcelWorksheet sheet, IDataReader reader, bool includeHeaders)
-		{
-			return LoadSheetFromDataReader(sheet, reader, includeHeaders, 0, 0);
-		}
-
-		public static bool LoadSheetFromDataReader(ExcelWorksheet sheet, IDataReader reader,bool includeHeaders, int rowOffset, int colOffset)
-		{
-			int row = 1;
-			while (reader!=null&&reader.Read())
-			{
-				if (row == 1&& includeHeaders)
-				{
-					for (int col = 0; col < reader.FieldCount; col++)
-					{
-						sheet.Cells[row+rowOffset, colOffset + col + 1].Value = reader.GetName(col);
-					}
-					row++;
-				}
-				for (int col = 0; col < reader.FieldCount; col++)
-				{
-					sheet.Cells[row + rowOffset, colOffset + col + 1].Value = reader[col];
-				}
-				row++;
-			}
-			return (row > 1);
-		}
-
-		public static bool AddCrossTrafficExcelWorksheetToFile(FileInfo fi, string sheetName, IDataReader reader, IDictionary<int, int> columnWidths, IDictionary<int, string> columnAlignments, bool includeHeaders = true) {
-			Action<ExcelRangeBase, object> stringMapper = (cell, value) => cell.Value = value.ToString();
-			Action<ExcelRangeBase, object> numericMapper = (cell, value) =>
-			{
-				cell.Value = Int32.Parse(value.ToString());
-				cell.Style.Numberformat.Format = "#,##0";
-			};
-
-			Dictionary<int, Action<ExcelRangeBase, object>> mappers = new Dictionary<int, Action<ExcelRangeBase, object>>();
-			mappers.Add(0, stringMapper);
-			mappers.Add(1, stringMapper);
-			mappers.Add(2, stringMapper);
-			mappers.Add(3, numericMapper);
-			mappers.Add(4, numericMapper);
-			return AddExcelWorksheetToFile(fi, sheetName, reader, mappers, columnWidths, columnAlignments);
-		}
-
-		public static bool AddExcelWorksheetToFile(FileInfo fi, string sheetName, IDataReader reader, IDictionary<int, Action<ExcelRangeBase, object>> mappers, IDictionary<int, int> columnWidths, IDictionary<int, string> columnAlignments, bool includeHeaders = true)
-		{
-			bool isSheetAdded = false;
-
-			if (reader == null)
-			{
-				return isSheetAdded;
-			}
-
-			if (fi.Exists && fi.Extension == ".xlsx")
-			{
-				using (ExcelPackage package = new ExcelPackage(fi))
-				{
-					ExcelWorksheet sheet = package.Workbook.Worksheets[sheetName];
-
-					if (sheet == null)
-					{
-						sheet = package.Workbook.Worksheets.Add(sheetName);
-					}
-
-					if (includeHeaders && reader.Read())
-					{
-						for (int col = 0; col < reader.FieldCount; col++)
-						{
-							sheet.Cells[1, col + 1].Value = reader.GetName(col);
-						}
-
-						sheet.View.FreezePanes(2, reader.FieldCount + 1);
-					}
-
-					foreach (int col in columnWidths.Keys)
-					{
-						sheet.Column(col).Width = columnWidths[col];
-					}
-
-					foreach (int col in columnAlignments.Keys)
-					{
-						string alignment = columnAlignments[col];
-						
-						if("left" == alignment) {
-							sheet.Column(col).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-						}
-						else if ("right" == alignment)
-						{
-							sheet.Column(col).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-						}
-					}
-
-					int row = includeHeaders ? 2 : 1;
-
-					while(reader.Read())
-					{
-						for (int col = 0; col < reader.FieldCount; col++)
-						{
-							mappers[col](sheet.Cells[row, col + 1], reader[col]);
-						}
-
-						row++;
-					}
-
-					package.Workbook.Worksheets.Delete(1);
-					package.Save();					
-					isSheetAdded = true;
-				}
-			}
-
-			return isSheetAdded;
 		}
 
 	}
