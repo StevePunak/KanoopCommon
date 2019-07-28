@@ -556,5 +556,22 @@ namespace KanoopCommon.Extensions
 			return diff <= degrees;
 		}
 
+		/// <summary>
+		/// Ensure that the value is between the two given (inclusive)
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="minimum"></param>
+		/// <param name="maximum"></param>
+		/// <returns></returns>
+		public static Double EnsureBetween(this Double value, Double minimum, Double maximum)
+		{
+			if(value < minimum)
+				return minimum;
+			else if(value > maximum)
+				return maximum;
+			else
+				return value;
+		}
+
 	}
 }
