@@ -12,6 +12,7 @@ using KanoopCommon.Threading;
 using System.Globalization;
 using System.Security.Permissions;
 using KanoopCommon.Addresses;
+using KanoopCommon.CommonObjects;
 
 namespace KanoopCommon.Logging
 {
@@ -31,6 +32,7 @@ namespace KanoopCommon.Logging
 
 		public const int        DEFAULT_ROTATION_SIZE = 10;
 		public const int        DEFAULT_ROTATION_HOURS = 24;
+
 		public const UInt32     DEFAULT_MAX_NETWORK_BPS = 3000;
 
 		public const int LOG_OUTPUT_DESTINATION_FLAGS =             0x000000FF;
@@ -253,6 +255,24 @@ namespace KanoopCommon.Logging
 
 				_lock.Unlock();
 			}
+		}
+
+		public void LogBanner(String extraString)
+		{
+			AssemblyTitleAttribute title = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyTitleAttribute>();
+			AssemblyDescriptionAttribute desc = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyDescriptionAttribute>();
+			AssemblyCompanyAttribute company = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyCompanyAttribute>();
+			AssemblyCopyrightAttribute copyright = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyCopyrightAttribute>();
+			SoftwareVersion version = new SoftwareVersion(Assembly.GetEntryAssembly().GetName().Version);
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine(String.Empty.PadRight(84, '*'));
+			String nameString = $"{title.Title} {version}  ({extraString})";
+			sb.AppendLine($"* {nameString,-80}*");
+			String authorString = $"{company.Company} {copyright.Copyright}";
+			sb.AppendLine($"* {desc.Description,-80}*");
+			sb.AppendLine(String.Empty.PadRight(84, '*'));
+			String output = sb.ToString();
+			LogToDevices(LogLevel.ALWAYS, output);
 		}
 
 		public void LogText(LogLevel logLevel, String format, params object[] parms)

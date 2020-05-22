@@ -18,6 +18,7 @@ namespace KanoopCommon.Serialization
 		{
 			_typeSizes = new Dictionary<Type, int>()
 			{
+				{  typeof(bool),            sizeof(Int32) },
 				{  typeof(char),            sizeof(char) },
 				{  typeof(SByte),           sizeof(SByte) },
 				{  typeof(byte),            sizeof(byte) },
@@ -44,6 +45,9 @@ namespace KanoopCommon.Serialization
 					Object value = property.GetValue(thing);
 					switch(Type.GetTypeCode(property.PropertyType))
 					{
+						case TypeCode.Boolean:
+							bw.Write((Int32)(((bool)value) == true ? 1 : 0));
+							break;
 						case TypeCode.Char:
 							bw.Write((Char)value);
 							break;
@@ -97,6 +101,9 @@ namespace KanoopCommon.Serialization
 						Object value = null;
 						switch(Type.GetTypeCode(property.PropertyType))
 						{
+							case TypeCode.Boolean:
+								value = (br.ReadInt32() != 0) ? true : false;
+								break;
 							case TypeCode.Char:
 								value = br.ReadChar();
 								break;
