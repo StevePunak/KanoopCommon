@@ -270,5 +270,15 @@ namespace KanoopCommon.Extensions
 			UInt64 ticks = br.ReadUInt64();
 			return TimeSpan.FromTicks((long)ticks);
 		}
+
+		public static long TotalMicroseconds(this TimeSpan value)
+		{
+			return value.Ticks / MicrosecondsPerTick;
+		}
+
+		public static long CurrentMicroseconds
+		{
+			get { return DateTime.UtcNow.Ticks / MicrosecondsPerTick; }
+		}
 	}
 }

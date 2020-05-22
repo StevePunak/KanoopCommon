@@ -12,6 +12,13 @@ namespace KanoopCommon.Geometry
 
 		Forward,
 		Backward,
+		Up,
+		Down,
+	}
+
+	public enum MomentarySwitchMode
+	{
+		NormalOpen, NormalClosed
 	}
 
 	public enum SpinDirection

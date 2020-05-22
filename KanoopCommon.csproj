@@ -175,7 +175,7 @@
     <Compile Include="Extensions\TimeZoneInfoExtensions.cs" />
     <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Extensions\UInt32Extensions.cs" />
+    <Compile Include="Extensions\UIntExtensions.cs" />
     <Compile Include="Extensions\XmlDocumentExtensions.cs" />
     <Compile Include="Extensions\XmlElementExtensions.cs" />
     <Compile Include="Extensions\XmlNodeExtensions.cs" />

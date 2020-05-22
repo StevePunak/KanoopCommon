@@ -371,6 +371,14 @@ namespace KanoopCommon.Logging
 			}
 		}
 
+		public void MaybeLog(bool log, LogLevel level, String format, params object[] parms)
+		{
+			if(log)
+			{
+				LogText(level, format, parms);
+			}
+		}
+
 		public static void SysLogText(LogLevel logLevel, String text, params object[] parms)
 		{
 			if(_systemLog != null)

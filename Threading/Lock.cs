@@ -57,11 +57,21 @@ namespace KanoopCommon.Threading
 		{
 		}
 
+		/// <summary>
+		/// Wait for the event to be triggered
+		/// </summary>
+		/// <param name="time"></param>
+		/// <returns>true if event occurred before timeout</returns>
 		public bool Wait(TimeSpan time)
 		{
 			return Wait((int)time.TotalMilliseconds);
 		}
 
+		/// <summary>
+		/// Wait for the event to be triggered
+		/// </summary>
+		/// <param name="time"></param>
+		/// <returns>true if event occurred before timeout</returns>
 		public bool Wait(int msecs)
 		{
 			bool result = false;
@@ -76,6 +86,9 @@ namespace KanoopCommon.Threading
             return result;
 		}
 
+		/// <summary>
+		/// Wait indefinitely for the event
+		/// </summary>
 		public void Wait()
 		{
 			_event.WaitOne();

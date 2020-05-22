@@ -255,7 +255,7 @@ namespace KanoopCommon.Threading
 
 		bool _Start()
 		{
-			bool bRet = false;
+			bool result = false;
 
 			if(_state != ThreadState.Stopped)
 			{
@@ -267,7 +267,7 @@ namespace KanoopCommon.Threading
 			_thread = new Thread(ThreadMain);
 			_thread.Name = String.Format("{0} [{1}]", _name, _thread.GetHashCode());
 			_thread.Start();
-			if(( bRet = _startupEvent.Wait(_startupTimeout) ) == false)
+			if(( result = _startupEvent.Wait(_startupTimeout) ) == false)
 			{
 				_thread.Abort();
 				ChangeState(ThreadState.Aborted);
@@ -289,7 +289,7 @@ namespace KanoopCommon.Threading
 					_threadListLock.Unlock();
 				}
 			}
-			return bRet && _state != ThreadState.Stopped;
+			return result && _state != ThreadState.Stopped;
 		}
 
 		public virtual bool Stop()

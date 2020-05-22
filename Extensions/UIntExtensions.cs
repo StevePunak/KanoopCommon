@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KanoopCommon.Extensions
 {
-	public static class UInt32Extensions
+	public static class UIntExtensions
 	{
 		public static Boolean CompareList(this List<UInt32> leftList, List<UInt32> rightList)
 		{
@@ -51,6 +51,23 @@ namespace KanoopCommon.Extensions
 				sb.AppendFormat("{0};", item.ToString());
 			}
 			return sb.ToString().TrimEnd(';');
+		}
+
+		/// <summary>
+		/// Ensure that the value is between the two given (inclusive)
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="minimum"></param>
+		/// <param name="maximum"></param>
+		/// <returns></returns>
+		public static UInt32 EnsureBetween(this UInt32 value, UInt32 minimum, UInt32 maximum)
+		{
+			if(value < minimum)
+				return minimum;
+			else if(value > maximum)
+				return maximum;
+			else
+				return value;
 		}
 	}
 }
