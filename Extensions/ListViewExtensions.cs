@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -22,7 +23,7 @@ namespace KanoopCommon.Extensions
 			public Object Tag { get; private set; }
 
 			public ListViewRow(Object name, Object firstColumnText, Object tag)
-				: this(name, firstColumnText, new List<Object>(), tag) {}
+				: this(name, firstColumnText, new List<Object>(), tag) { }
 
 			public ListViewRow(Object name, Object firstColumnText, List<Object> columns, Object tag)
 			{
@@ -39,12 +40,12 @@ namespace KanoopCommon.Extensions
 			header = new ColumnHeader(name);
 			header.Width = width;
 			header.Name = header.Text = name;
-			if (listView.InvokeRequired)
-			{ 
+			if(listView.InvokeRequired)
+			{
 				listView.BeginInvoke(new MethodInvoker(() => listView.Columns.Add(header)));
 			}
 			else
-			{ 
+			{
 				listView.Columns.Add(header);
 			}
 		}
@@ -114,16 +115,26 @@ namespace KanoopCommon.Extensions
 
 		public static void SetListViewColumn(this ListView listView, ListViewItem item, String column, Object value)
 		{
+			SetListViewColumn(listView, item, column, value, Color.Transparent);
+		}
+
+		public static void SetListViewColumn(this ListView listView, ListViewItem item, String column, Object value, Color foreColor)
+		{
 			if(item.SubItems.ContainsKey(column) == true)
 			{
-				if(item.SubItems[column].Text != value.ToString())
+				ListViewItem.ListViewSubItem subItem = item.SubItems[column];
+				if(value != null && item.SubItems[column].Text != value.ToString())
 					item.SubItems[column].Text = value.ToString();
+				if(foreColor != Color.Transparent)
+					subItem.ForeColor = foreColor;
 			}
 			else if(listView.Columns.ContainsKey(column))
 			{
 				int index = listView.Columns.IndexOfKey(column);
 				if(item.SubItems[index].Text != value.ToString())
 					item.SubItems[index].Text = value.ToString();
+				if(foreColor != Color.Transparent)
+					item.SubItems[index].ForeColor = foreColor;
 			}
 			else
 			{
@@ -185,7 +196,7 @@ namespace KanoopCommon.Extensions
 
 			foreach(ListViewItem item in listView.Items)
 			{
-				if(	(item.Tag != null && item.Tag is T) &&
+				if((item.Tag != null && item.Tag is T) &&
 					(selectedOnly == false || item.Selected))
 				{
 					items.Add((T)item.Tag);

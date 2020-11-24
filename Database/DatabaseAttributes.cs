@@ -29,6 +29,8 @@ namespace KanoopCommon.Database
 			: base(value, representativeType) {} 
 	}
 
+	public class PrimaryKeyAttribute : Attribute { }
+
 
 	public class DefaultSchemaNameAttribute : StringAttribute { public DefaultSchemaNameAttribute(String value) : base(value) { } }
 

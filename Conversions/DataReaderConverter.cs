@@ -82,13 +82,6 @@ namespace KanoopCommon.Conversions
 					CacheReflection(prop.PropertyType);
 					classMap.ClassProperties.Add(prop.Name, prop);
 				}
-
-				/*
-				if (strFieldName != null)
-					hshMap.Add(strFieldName, prop);
-				else
-					hshMap.Add(prop.Name, prop);
-				 */
 			}
 			return classMap;
 

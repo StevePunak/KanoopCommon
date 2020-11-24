@@ -27,6 +27,7 @@ namespace KanoopCommon.Database
 	/// </summary>
 	public class DBUtil 
 	{
+		public static readonly char[] TrimEndChars = new char[] { ' ', '\n', '\r', ',' };
 		public DBUtil()
 		{
 //            m_ConnectionLock = new MutexLock();
