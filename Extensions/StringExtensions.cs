@@ -7,6 +7,14 @@ namespace KanoopCommon.Extensions
 {
 	public static class StringExtensions
 	{
+		public static String StringOrNull(Object o)
+		{
+			if(o == null)
+				return "null";
+			else
+				return o.ToString();
+		}
+
 		public static String SetMaxLength(this String value, int length)
 		{
 			return value.Length > length ? value.Substring(0, length) : value;
