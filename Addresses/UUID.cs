@@ -6,6 +6,7 @@ using KanoopCommon.Conversions;
 using System.IO;
 using System.Net;
 using KanoopCommon.CommonObjects;
+using KanoopCommon.Serialization;
 
 namespace KanoopCommon.Addresses
 {

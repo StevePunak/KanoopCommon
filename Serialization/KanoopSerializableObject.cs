@@ -78,6 +78,12 @@ namespace KanoopCommon.Serialization
 					}
 
 				}
+				else if(objType.FullName == typeof(UUID).FullName)
+				{
+					UUID uuid;
+					if(UUID.TryParse(parent.InnerText, out uuid))
+						retObj = new UUID(parent.InnerText);
+				}
 				else if(objType.FullName == "System.DateTime")
 				{
 					Int64 value;
@@ -316,6 +322,11 @@ namespace KanoopCommon.Serialization
 			{
 				retNode.AddAttribute(SerializationXML.ATTR_KEY, obj.ToString());
 				serializeThisNode = true;
+			}
+			/** UUID */
+			else if(objType == typeof(UUID))
+			{
+				retNode.InnerText = ((UUID)obj).ToString();
 			}
 			/**
 			 * For generics, we only serialize Dictionaries and Lists

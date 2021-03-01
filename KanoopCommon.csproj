@@ -205,6 +205,17 @@
     <Compile Include="Geometry\Triangle.cs" />
     <Compile Include="Geometry\Types.cs" />
     <Compile Include="Geo\NMEALine.cs" />
+    <Compile Include="Http\HttpAsychCallback.cs" />
+    <Compile Include="Http\HttpDelete.cs" />
+    <Compile Include="Http\HttpGet.cs" />
+    <Compile Include="Http\HttpGetParameter.cs" />
+    <Compile Include="Http\HttpHeader.cs" />
+    <Compile Include="Http\HttpPost.cs" />
+    <Compile Include="Http\HttpPut.cs" />
+    <Compile Include="Http\HttpTransaction.cs" />
+    <Compile Include="Http\IHttpHeader.cs" />
+    <Compile Include="Http\Uploader.cs" />
+    <Compile Include="Http\UrlPath.cs" />
     <Compile Include="Linux\Authorization.cs" />
     <Compile Include="Linux\LineSplitter.cs" />
     <Compile Include="Linux\LinuxProcess.cs" />
@@ -226,6 +237,7 @@
     <Compile Include="Logging\MemoryLog.cs" />
     <Compile Include="Logging\OpenFlags.cs" />
     <Compile Include="Serialization\BinarySerializer.cs" />
+    <Compile Include="Serialization\ISerializableToJson.cs" />
     <Compile Include="Serialization\KVPSerializer.cs" />
     <Compile Include="Serial\MonoSerialPort.cs" />
     <Compile Include="Performance\BitRateMonitor.cs" />
