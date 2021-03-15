@@ -506,5 +506,11 @@ namespace KanoopCommon.Extensions
 		{
 			return dt1 > dt2 ? dt1 : dt2;
 		}
+
+		public static DateTime MakeUtc(this DateTime original)
+		{
+			DateTime result = DateTime.SpecifyKind(original, DateTimeKind.Utc);
+			return result;
+		}
 	}
 }

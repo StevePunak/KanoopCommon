@@ -74,6 +74,22 @@ namespace KanoopCommon.CommonObjects
 			return retString != null;
 		}
 
+		public static bool TryGetValue<T>(Object it, out String value) where T : Attribute
+		{
+			value = null;
+			FieldInfo field = it.GetType().GetField(it.ToString());
+			if(field != null)
+			{
+				T attr = field.GetCustomAttribute<T>();
+				if(attr != null)
+				{
+					StringAttribute o = attr as StringAttribute;
+					value = o.Value;
+				}
+			}
+			return value != null;
+		}
+
 		#endregion
 
 		#region Utility
@@ -208,6 +224,7 @@ namespace KanoopCommon.CommonObjects
 
 			return result;
 		}
+
 	}
 	public class UriAttribute : StringAttribute { public UriAttribute(String val) : base(val) {} }
 	public class TenantAttribute : StringAttribute { public TenantAttribute(String val) : base(val) {} }

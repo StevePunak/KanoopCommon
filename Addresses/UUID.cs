@@ -7,12 +7,14 @@ using System.IO;
 using System.Net;
 using KanoopCommon.CommonObjects;
 using KanoopCommon.Serialization;
+using Newtonsoft.Json;
 
 namespace KanoopCommon.Addresses
 {
 
 	public class UUIDList : List<UUID>{}
 
+	[JsonConverter(typeof(UUIDJsonConverter))]
 	[TypeConverter(typeof(UUIDConverter))]
 	public class UUID : IComparable
 	{
@@ -330,6 +332,26 @@ namespace KanoopCommon.Addresses
 			m_nHash32 = (UInt32)(i1 ^ i2 ^ i3 ^ i4);
 		}
 
+	}
+	public class UUIDJsonConverter : JsonConverter
+	{
+		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		{
+			UUID user = (UUID)value;
+
+			writer.WriteValue(user.ToString());
+		}
+
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		{
+			UUID uuid = new UUID((string)reader.Value);
+			return uuid;
+		}
+
+		public override bool CanConvert(Type objectType)
+		{
+			return objectType == typeof(UUID);
+		}
 	}
 }
 
