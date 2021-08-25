@@ -13,5 +13,16 @@ namespace KanoopCommon.Extensions
 			       (c >= 'a' && c <= 'f') ||
 			       (c >= 'A' && c <= 'F');
 		}
+
+		public static bool IsDigitOrDot(this Char c)
+		{
+			return Char.IsDigit(c) || c == '.';
+		}
+
+		public static bool IsValidSymbolChar(this Char c)
+		{
+			return Char.IsLetterOrDigit(c) || c == '_';
+		}
+
 	}
 }
