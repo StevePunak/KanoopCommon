@@ -285,8 +285,77 @@ namespace KanoopCommon.Database
 
 		String[] SplitParts(String origLine)
 		{
-			const char QUOTE = '\"';
+			List<String> result = new List<string>();
+			int index = 0;
 
+			String line = origLine.TrimEnd();
+
+			while(index < line.Length)
+			{
+				String part;
+				if(line[index] == QUOTE)
+					part = GetQuotedPart(line, index, out index);
+				else
+					part = GetUnquotedPart(line, index, out index);
+				result.Add(part);
+			}
+
+
+			return result.ToArray();
+		}
+
+		String GetQuotedPart(String line, int startIndex, out int newIndex)
+		{
+			StringBuilder sb = new StringBuilder();
+			newIndex = startIndex + 1;
+			while(newIndex < line.Length)
+			{
+				if(line[newIndex] == QUOTE)
+				{
+					if(newIndex < line.Length - 1 && line[newIndex + 1] == QUOTE)
+					{
+						sb.Append(QUOTE);
+						newIndex += 2;
+					}
+					else
+					{
+						newIndex++;
+						break;
+					}
+				}
+				else if(line[newIndex] == ESC_CHAR && newIndex < line.Length - 1)
+				{
+					if(line[newIndex + 1] == ESC_CHAR)
+						sb.Append(ESC_CHAR);
+					else
+						sb.Append(line[newIndex + 1]);
+					newIndex += 2;
+				}
+				else
+				{
+					sb.Append(line[newIndex]);
+					newIndex++;
+				}
+			}
+			newIndex++;
+			return sb.ToString();
+		}
+
+		String GetUnquotedPart(String line, int startIndex, out int newIndex)
+		{
+			StringBuilder sb = new StringBuilder();
+			newIndex = startIndex;
+			while(newIndex < line.Length && line[newIndex] != ',')
+			{
+				sb.Append(line[newIndex]);
+				newIndex++;
+			}
+			newIndex++;
+			return sb.ToString();
+		}
+
+		String[] OldSplitParts(String origLine)
+		{
 			String line = origLine;
 
 			List<Char> splitChars = new List<Char>() { ',' };
@@ -335,81 +404,6 @@ namespace KanoopCommon.Database
 				parts.Add(line.Substring(partStartIndex));
 			}
 
-			return parts.ToArray();
-		}
-
-		String[] OldSplitParts(String line)
-		{
-			List<String> parts = new List<String>();
-			bool delimited = false;
-			Char delimiter = (char)0;
-
-			SplitStates state = SplitStates.Data;
-
-			if (line[0] == 0x22 || line[0] == 0x27)
-			{
-				delimited = true;
-				delimiter = line[0];
-
-			}
-
-
-			int inOffset = 0;
-			while (parts.Count < this.Columns.Count && inOffset < line.Length)
-			{
-				/** do a word */
-				StringBuilder sb = new StringBuilder();
-				state = delimited ? SplitStates.OpenDelim : SplitStates.Data;
-
-				for (; inOffset < line.Length && state != SplitStates.CloseDelim; inOffset++)
-				{
-					switch (state)
-					{
-						case SplitStates.OpenDelim:
-							if (line[inOffset] != delimiter)
-							{
-								throw new Exception("No open delimiter found");
-							}
-							state = SplitStates.Data;
-							break;
-
-						case SplitStates.Data:
-							if (line[inOffset] == ESC_CHAR)
-							{
-								state = SplitStates.Escape;
-							}
-							else if (line[inOffset] == delimiter)
-							{
-								state = SplitStates.CloseDelim;
-							}
-							else if (delimited == false && line[inOffset] == ',')
-							{
-								state = SplitStates.CloseDelim;
-								inOffset--;     // decrement because it will be re-incremented in the loop
-							}
-							else
-							{
-								sb.Append(line[inOffset]);
-							}
-							break;
-
-						case SplitStates.Escape:
-							sb.Append(line[inOffset]);
-							state = SplitStates.Data;
-							break;
-
-						case SplitStates.CloseDelim:
-							break;
-
-					}
-				}
-
-				parts.Add(sb.ToString());
-
-				/** we should be on a comma, or at the end */
-				inOffset++;
-
-			}
 			return parts.ToArray();
 		}
 
