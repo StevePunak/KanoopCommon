@@ -354,59 +354,6 @@ namespace KanoopCommon.Database
 			return sb.ToString();
 		}
 
-		String[] OldSplitParts(String origLine)
-		{
-			String line = origLine;
-
-			List<Char> splitChars = new List<Char>() { ',' };
-			List<String> parts = new List<String>();
-
-			line = line.Trim();
-
-			bool inQuotedText = false;
-			bool lastWasMatch = false;
-			int partStartIndex = 0;
-			for (int x = 0; x < line.Length; x++)
-			{
-				if (line[x] == QUOTE)
-				{
-					if (inQuotedText)
-					{
-						parts.Add(line.Substring(partStartIndex, x - partStartIndex));
-						x++;
-						partStartIndex = x + 1;
-						inQuotedText = false;
-						lastWasMatch = true;
-					}
-					else
-					{
-						inQuotedText = true;
-						partStartIndex = x + 1;
-					}
-				}
-				else if (splitChars.Contains(line[x]) && inQuotedText == false)
-				{
-					//if(lastWasMatch == false)
-					{
-						parts.Add(line.Substring(partStartIndex, x - partStartIndex));
-						partStartIndex = x + 1;
-						lastWasMatch = true;
-					}
-				}
-				else
-				{
-					lastWasMatch = false;
-				}
-			}
-
-			if (lastWasMatch == false && partStartIndex < line.Length)
-			{
-				parts.Add(line.Substring(partStartIndex));
-			}
-
-			return parts.ToArray();
-		}
-
 		void ParseHeader(String strHeader)
 		{
 			_columns = new List<string>();
