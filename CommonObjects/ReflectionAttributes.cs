@@ -225,6 +225,25 @@ namespace KanoopCommon.CommonObjects
 			return result;
 		}
 
+		public static bool TryGetEnum<T>(String stringValue, out T value) where T : Enum
+		{
+			bool result = false;
+			value = default(T);
+
+			foreach(Enum e in Enum.GetValues(typeof(T)))
+			{
+				String desc;
+				if(TryGetAttributeValue(e, typeof(EnumStringAttribute), out desc) && desc == stringValue)
+				{
+					value = (T)e;
+					result = true;
+					break;
+				}
+			}
+
+			return result;
+		}
+
 	}
 	public class UriAttribute : StringAttribute { public UriAttribute(String val) : base(val) {} }
 	public class TenantAttribute : StringAttribute { public TenantAttribute(String val) : base(val) {} }
