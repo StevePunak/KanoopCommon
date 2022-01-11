@@ -197,7 +197,7 @@ namespace KanoopCommon.Http
 						ResponseAsByteArray = ASCIIEncoding.UTF8.GetBytes(sr.ReadToEnd());
 						if (ResponseAsByteArray.Length > 0)
 						{
-							// Message = ASCIIEncoding.ASCII.GetString(ResponseAsByteArray);
+							Message = ASCIIEncoding.ASCII.GetString(ResponseAsByteArray);
 						}
 					}				
 				}
