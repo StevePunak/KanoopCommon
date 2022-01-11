@@ -6,11 +6,13 @@ using System.ComponentModel;
 using KanoopCommon.Extensions;
 using System.Diagnostics;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace KanoopCommon.CommonObjects
 {
 	[IsSerializable]
 	[TypeConverter(typeof(SoftwareVersionConverter))]
+	[JsonConverter(typeof(SoftwareVersionJsonConverter))]
 	public class SoftwareVersion : IComparable
 	{
 		#region Enumerations
@@ -684,6 +686,27 @@ namespace KanoopCommon.CommonObjects
 		#endregion
 	}
 
+	public class SoftwareVersionJsonConverter : JsonConverter
+	{
+		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		{
+			if(value is SoftwareVersion == false)
+				return;
+			writer.WriteValue(value.ToString());
+		}
+
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		{
+			SoftwareVersion v = new SoftwareVersion((String)reader.Value);
+			return v;
+		}
+
+		public override bool CanConvert(Type objectType)
+		{
+			return objectType == typeof(SoftwareVersion);
+		}
+	}
+	
 	public class SoftwareVersionConverter : TypeConverter
 	{
 		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
@@ -696,6 +719,5 @@ namespace KanoopCommon.CommonObjects
 				version = new SoftwareVersion();
 			return version;
 		}
-
 	}
 }
