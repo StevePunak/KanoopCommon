@@ -265,6 +265,8 @@
     <Compile Include="Reflection\ReflectionUtilities.cs" />
     <Compile Include="Serialization\Attributes.cs" />
     <Compile Include="Serialization\KanoopSerializableObject.cs" />
+    <Compile Include="SourceCode\CPlusPlusGenerator.cs" />
+    <Compile Include="SourceCode\SourceGenerator.cs" />
     <Compile Include="TCP\Clients\TcpClientClient.cs" />
     <Compile Include="TCP\TcpConnectedClient.cs" />
     <Compile Include="TCP\TcpServer.cs" />
