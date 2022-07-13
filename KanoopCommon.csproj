@@ -280,6 +280,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\TableNames\Interfaces\" />
+    <Folder Include="SourceCode\" />
     <Folder Include="SSH\" />
   </ItemGroup>
   <ItemGroup>
