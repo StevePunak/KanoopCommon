@@ -46,4 +46,11 @@ namespace KanoopCommon.Serialization
 			BindingFlags = bindingFlags;
 		}
 	}
+
+	public class JsonEnumNameAttribute : EnumStringAttribute
+	{
+		public JsonEnumNameAttribute(string value) : base(value)
+		{
+		}
+	}
 }

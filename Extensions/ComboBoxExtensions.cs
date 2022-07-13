@@ -23,5 +23,14 @@ namespace KanoopCommon.Extensions
 
 			return item != null;
 		}
+
+		public static void AddEnums<T>(this ComboBox comboBox) where T : Enum
+		{
+			foreach(Enum e in Enum.GetValues(typeof(T)))
+			{
+				comboBox.Items.Add(e);
+			}
+			
+		}
 	}
 }
