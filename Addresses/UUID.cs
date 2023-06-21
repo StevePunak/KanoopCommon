@@ -344,7 +344,15 @@ namespace KanoopCommon.Addresses
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			UUID uuid = new UUID((string)reader.Value);
+			UUID uuid;
+			if(String.IsNullOrEmpty((string)reader.Value))
+			{
+				uuid = UUID.EmptyUUID;
+			}
+			else
+			{
+				uuid = new UUID((string)reader.Value);
+			}
 			return uuid;
 		}
 

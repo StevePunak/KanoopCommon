@@ -157,7 +157,10 @@ namespace KanoopCommon.Database
 			List<String> parts = new List<String>();
 			foreach (Object item in parms)
 			{
-				parts.Add(item.ToString());
+				if(item != null)
+					parts.Add(item.ToString());
+				else
+					parts.Add(String.Empty);
 			}
 			AddLine(parts);
 		}

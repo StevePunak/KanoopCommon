@@ -6,3 +6,5 @@ obj/Debug/
 obj/
 
 *.user
+
+bin/Release/
